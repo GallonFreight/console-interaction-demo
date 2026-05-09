@@ -1,0 +1,38 @@
+<project>
+
+	<property name="src.dir" value="src"/>
+	<property name="lib.dir" value="lib"/>
+
+	<property name="build.root" value="build"/>
+	<property name="build.classes" value="${build.root}/classes"/>
+	<property name="jar.file" value="${build.root}/console-interaction.jar"/>
+
+	<property name="main.class" value="main.Main"/>
+
+	<path id="classpath">
+		<fileset dir="${lib.dir}" includes="*.jar"/>
+	</path>
+
+
+	<target name="clean">
+		<delete dir="${build.root}"/>
+	</target>
+
+	<target name="compile">
+		<mkdir dir="${build.classes}"/>
+		<javac srcdir="${src.dir}" destdir="${build.classes}" classpathref="classpath"/>
+	</target>
+
+	<target name="jar" depends="compile">
+		<mkdir dir="${build.jar}"/>
+		<jar destfile="${jar.file}" basedir="${build.classes}">
+			<manifest>
+				<attribute name="Main-Class" value="${main.class}"/>
+			</manifest>
+			<zipgroupfileset dir="${lib.dir}" includes="*.jar"/>
+		</jar>
+	</target>
+
+	<target name="rebuild" depends="clean,jar"/>
+
+</project>
